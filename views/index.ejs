@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complaint Management</title>
+  <link rel="stylesheet" href="/styles/main.css">
+  <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+</head>
+
+<body>
+  <div class="container">
+    <h1>Complaints</h1>
+    <a id="newPostBtn" href="/new">New Post</a>
+    <ul id="postsList">
+      <% listItems.forEach(item=> { %>
+        <li>
+          <h2>
+            <%=item.title%>
+          </h2>
+          <small>
+            <%=item.created_at %>
+          </small>
+          <p>
+            <%=item.description%>
+          </p>
+          <small>By: <%=item.user_id%> </small>
+          <a class="edit" href="/edit/<%= item.id %>">Edit</a>
+          <a class="delete" href="/api/posts/delete/<%= item.id %>">Delete</a>
+        </li>
+        <% }); %>
+    </ul>
+  </div>
+
+</body>
+
+</html>
