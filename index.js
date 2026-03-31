@@ -22,7 +22,7 @@ let currentUserId = 1;
 
 async function getItems() {
   const result = await db.query(
-    "SELECT * FROM complaint JOIN complaint_status ON complaint.status_id = complaint_status.status_id JOIN admin_remark ON complaint.complaint_id = admin_remark.complaint_id WHERE user_id=$1 ORDER BY created_at DESC",
+    "SELECT * FROM complaint c JOIN complaint_status cs ON c.status_id = cs.status_id LEFT JOIN admin_remark ar ON c.complaint_id = ar.complaint_id WHERE user_id=$1 ORDER BY created_at DESC",
     [currentUserId],
   );
   return result;
@@ -106,7 +106,10 @@ app.post("/login", async (req, res) => {
 app.get("/new", async (req, res) => {
   const cat = await db.query("SELECT * FROM category");
   console.log(cat.rows);
-  res.render("user/modify.ejs", { heading: "New Complaint", categories: cat.rows });
+  res.render("user/modify.ejs", {
+    heading: "New Complaint",
+    categories: cat.rows,
+  });
 });
 
 app.post("/new", async (req, res) => {
@@ -121,42 +124,12 @@ app.post("/new", async (req, res) => {
     [title, description, new Date(), currentUserId, category],
   );
 
+  // db.query("INSERT INTO compla")
+
   const result = await getItems();
-  console.log("new = ", result.rows); 
+  console.log("new = ", result.rows);
   res.render("user/index.ejs", { listItems: result.rows });
 });
-
-// app.post("/submit", async (req, res) => {
-//   const result = req.body;
-//   const data = result.rows[0];
-
-//   db.query(
-//     "INSERT INTO complaint(title, description, created_at, user_id, category_id, status_id) VALUES($1,$2,$3,$4,$5)",
-//     [data.title, data.content, new Date()],
-//   );
-// });
-// app.post("/add", async (req, res) => {
-//   const item = req.body.newItem;
-//   await db.query("INSERT INTO items(title) VALUES($1)", [item]);
-//   res.redirect("/");
-// });
-
-// app.post("/edit", async (req, res) => {
-//   const itemID = req.body.updatedItemId;
-//   const itemTitle = req.body.updatedItemTitle;
-//   console.log(itemID, itemTitle);
-//   await db.query("UPDATE items SET title=$1 WHERE id=$2", [itemTitle, itemID]);
-//   res.redirect("/");
-// });
-
-// app.post("/delete", async (req, res) => {
-//   const deleteId = req.body.deleteItemId;
-//   const deletedThis = await db.query("DELETE FROM items WHERE id=$1 ", [
-//     deleteId,
-//   ]);
-//   // console.log(deleteId);
-//   res.redirect("/");
-// });
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

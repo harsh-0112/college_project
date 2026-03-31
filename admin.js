@@ -20,7 +20,7 @@ app.use(express.static("public"));
 
 app.get("/admin", async (req, res) => {
   const result = await db.query(
-    "SELECT * FROM complaint JOIN category ON complaint.category_id = category.category_id JOIN complaint_status ON complaint.status_id = complaint_status.status_id JOIN admin_remark ON complaint.complaint_id = admin_remark.complaint_id ORDER BY created_at DESC",
+    "SELECT * FROM complaint JOIN category ON complaint.category_id = category.category_id JOIN complaint_status ON complaint.status_id = complaint_status.status_id ORDER BY created_at DESC",
   );
   console.log(result.rows);
   res.render("admin/index.ejs", { listItems: result.rows });

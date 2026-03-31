@@ -27,14 +27,13 @@
           </p>
           <!-- <small>By: =item.user_id </small> -->
         
-          <br>
+
           <div>
-            <h4><u>Admin Remark</u> 
-              <% if(item.status_name) {%>
-              (<%= item.status_name %>)</h4>
-              <% } %>
-            <small>As per <%= item.remark_date %></small>
+            <h5><u>Status</u> : <%= item.status_name %></h5>
+
             <% if(item.remark_text){ %>
+            <h4><u>Admin Remark</u> 
+            <small>As per <%= item.remark_date %></small>
               <h4><%= item.remark_text %></h4>
               <% } %>
           </div>
