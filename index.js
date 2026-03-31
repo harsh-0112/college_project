@@ -22,7 +22,7 @@ let currentUserId = 1;
 
 async function getItems() {
   const result = await db.query(
-    "SELECT * FROM complaint JOIN complaint_status ON complaint.status_id = complaint_status.status_id WHERE user_id=$1 ORDER BY created_at DESC",
+    "SELECT * FROM complaint JOIN complaint_status ON complaint.status_id = complaint_status.status_id JOIN admin_remark ON complaint.complaint_id = admin_remark.complaint_id WHERE user_id=$1 ORDER BY created_at DESC",
     [currentUserId],
   );
   return result;
@@ -98,7 +98,7 @@ app.post("/login", async (req, res) => {
       );
 
       console.log(currentUserId);
-      res.render("index.ejs", { listItems: result.rows });
+      res.render("user/index.ejs", { listItems: result.rows });
     }
   }
 });
@@ -106,7 +106,7 @@ app.post("/login", async (req, res) => {
 app.get("/new", async (req, res) => {
   const cat = await db.query("SELECT * FROM category");
   console.log(cat.rows);
-  res.render("modify.ejs", { heading: "New Complaint", categories: cat.rows });
+  res.render("user/modify.ejs", { heading: "New Complaint", categories: cat.rows });
 });
 
 app.post("/new", async (req, res) => {
