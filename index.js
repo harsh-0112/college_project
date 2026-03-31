@@ -122,8 +122,8 @@ app.post("/new", async (req, res) => {
   );
 
   const result = await getItems();
-  console.log("new = ", result.rows);
-  res.render("index.ejs", { listItems: result.rows });
+  console.log("new = ", result.rows); 
+  res.render("user/index.ejs", { listItems: result.rows });
 });
 
 // app.post("/submit", async (req, res) => {
