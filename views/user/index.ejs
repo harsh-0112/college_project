@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complaint Management</title>
+  <link rel="stylesheet" href="/styles/main.css">
+  <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+</head>
+
+<body>
+  <div class="container">
+    <h1>Complaints</h1>
+    <a id="newPostBtn" href="/new">New Complaint</a>
+    <ul id="postsList">
+      <% listItems.forEach(item=> { %>
+        <li>
+          <h2>
+            <b><%=item.title%> </b> 
+          </h2>
+          <small>
+            <%=item.created_at %>
+          </small>
+          <p>
+            <%=item.description%>
+          </p>
+          <!-- <small>By: =item.user_id </small> -->
+        
+          <div>
+            <h4><u>Admin Remark</u> 
+              <% if(item.status_name) {%>
+              (<%= item.status_name %>)</h4>
+              <% } %>
+            <small>As per <%= item.remark_date %></small>
+            <% if(item.remark_text){ %>
+              <h4><%= item.remark_text %></h4>
+              <% } %>
+          </div>
+        </li>
+        <% }); %>
+    </ul>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+
+</html>
