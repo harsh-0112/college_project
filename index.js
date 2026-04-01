@@ -125,7 +125,7 @@ app.post("/new", async (req, res) => {
   );
 
   // db.query("INSERT INTO compla")
-
+  
   const result = await getItems();
   console.log("new = ", result.rows);
   res.render("user/index.ejs", { listItems: result.rows });

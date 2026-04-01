@@ -12,11 +12,14 @@
 <body>
   <div class="container">
     <h1>
-      <%= heading %>
+      <% if(locals.heading){%>
+        <%= heading %>
+      <% } %>
+
     </h1>
 
     <% if (locals.item) { %>
-      <form id="editForm" method="post" action="/api/posts/<%=post.id%>">
+      <form id="editForm" method="post" action="/remark/<%=complaint.id%>">
         <input type="text" name="title" value="<%=post.title %>">
         <textarea name="content" rows="10"><%=post.content %></textarea>
         <input type="text" name="author" value="<%=post.author %>">
@@ -25,17 +28,18 @@
         </button>
       </form>
       <% } else {%>
-        <form id="newPostForm" method="post" action="/new">
-          <input type="text" name="title" placeholder="Title" required>
-          <textarea name="description" placeholder="description" required rows="10"></textarea>
+        <form id="newPostForm" method="post" action="/remark/<%=complaint.complaint_id%>">
+          <input type="text" name="title" value="<%=complaint.title%>" placeholder="Title" required readonly>
+          <textarea name="description" placeholder="description" required rows="10" readonly><%= complaint.description %> </textarea>
+          
           <div>
-            <label for="cars">Choose a category:</label>
-            <select name="cat" id="cars" required>
+            <input type="text" name="admin_text" value="" placeholder="Admin Remark TEXT" required>
+            <label for="cars">Choose the status:</label>
+            <select name="status" id="status" required>
               <option value="">None</option>
-              <% categories.forEach(element => { %>
-                <option value="<%= element.category_id %>"><%= element.category_name %></option>
+              <% status.forEach(element => { %>
+                <option value="<%= element.status_id %>"><%= element.status_name %></option>
               <% })%>
-              
             </select>
           </div>
           <button class="full-width" type="submit">

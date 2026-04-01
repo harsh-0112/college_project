@@ -11,29 +11,32 @@
 
 <body>
   <div class="container">
-    <h1>Admin Complaints Portal</h1>
+    <u><h1>Admin Complaints</h1></u>
+
     <ul id="postsList">
       <% listItems.forEach(item=> { %>
         <li>
           <h2>
-            <%=item.title%>
+            <b><%=item.title%> </b> 
           </h2>
           <small>
             <%=item.created_at %>
           </small>
           <p>
-            <%=item.category_name%>
+            <%=item.description%>
           </p>
           <!-- <small>By: =item.user_id </small> -->
-           <div>
-            <h4><u>Admin Remark</u> 
-              <% if(item.status_name) {%>
-              (<%= item.status_name %>)</h4>
-              <% } %>
-            <small>As per <%= item.remark_date %></small>
+        
+
+          <div>
+            <h5><u>Status</u> : <%= item.status_name %></h5>
+
             <% if(item.remark_text){ %>
+            <h4><u>Admin Remark</u> </h4>
+            <small>As per <%= item.remark_date %></small>
               <h4><%= item.remark_text %></h4>
               <% } %>
+              
           </div>
           <a class="remark" href="/remark/<%= item.complaint_id %>">Add Remark</a>
           <a class="delete" href="/api/posts/delete/<%= item.id %>">Delete</a>
