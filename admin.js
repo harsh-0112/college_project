@@ -23,7 +23,13 @@ app.get("/admin", async (req, res) => {
     "SELECT * FROM complaint c JOIN complaint_status cs ON c.status_id = cs.status_id ORDER BY created_at DESC",
   );
   console.log(result.rows);
-  res.render("admin/index.ejs", { listItems: result.rows });
+  const status = await db.query("SELECT * FROM complaint_status");
+
+  res.render("admin/index.ejs", {
+    listItems: result.rows,
+    status: status.rows,
+    current_status: "All",
+  });
 });
 
 app.get("/remark/:id", async (req, res) => {
@@ -65,6 +71,32 @@ app.post("/remark/:id", async (req, res) => {
     console.log("Error while Inserting admin_remark" + err);
   }
 });
+
+app.post("/filter", async (req, res) => {
+  const status_id = req.body.status;
+  if (status_id == 0) {
+    res.redirect("/admin");
+  } else {
+    const result = await db.query(
+      "SELECT * FROM complaint c JOIN complaint_status cs ON c.status_id = cs.status_id WHERE c.status_id = $1 ORDER BY created_at DESC",
+      [status_id],
+    );
+
+    const status = await db.query("SELECT * FROM complaint_status");
+    const current_status = await db.query(
+      "SELECT status_name FROM complaint_status WHERE status_id = $1",
+      [status_id],
+    );
+
+    res.render("admin/index.ejs", {
+      listItems: result.rows,
+      status: status.rows,
+      current_status: current_status.rows[0].status_name,
+    });
+    console.log(result.rows);
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });

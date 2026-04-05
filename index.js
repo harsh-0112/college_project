@@ -70,6 +70,18 @@ app.get("/login", async (req, res) => {
   res.render("user/login.ejs");
 });
 
+app.get("/complaints", async (req, res) => {
+  const result = await getItems();
+
+  await db.query(
+    "INSERT INTO login_history(login_time,user_id) VALUES($1,$2)",
+    [new Date(), currentUserId],
+  );
+
+  console.log(currentUserId);
+  res.render("user/index.ejs", { listItems: result.rows });
+});
+
 app.post("/login", async (req, res) => {
   const email = req.body.username;
   const password = req.body.password;
@@ -90,15 +102,7 @@ app.post("/login", async (req, res) => {
     } else {
       currentUserId = check.rows[0].user_id;
 
-      const result = await getItems();
-
-      await db.query(
-        "INSERT INTO login_history(login_time,user_id) VALUES($1,$2)",
-        [new Date(), currentUserId],
-      );
-
-      console.log(currentUserId);
-      res.render("user/index.ejs", { listItems: result.rows });
+      res.redirect("/complaints");
     }
   }
 });
@@ -125,10 +129,8 @@ app.post("/new", async (req, res) => {
   );
 
   // db.query("INSERT INTO compla")
-  
-  const result = await getItems();
-  console.log("new = ", result.rows);
-  res.render("user/index.ejs", { listItems: result.rows });
+
+  res.redirect("/complaints");
 });
 
 app.listen(port, () => {

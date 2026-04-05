@@ -12,7 +12,21 @@
 <body>
   <div class="container">
     <u><h1>Admin Complaints</h1></u>
-
+    
+    <form id="filter-form" method="post" action="/filter">
+      <label for="cars">Choose the status:</label>
+      <select name="status" id="status" required>
+      <option value="0">all</option>
+      <% status.forEach(element => { %>
+        <option value="<%= element.status_id %>"><%= element.status_name %></option>
+      <% })%>
+      </select>
+      <button class="btn-sm" type="submit">
+        Search
+      </button>
+    </form>
+    <br/>
+    <u><h2><%=current_status%></h2></u>
     <ul id="postsList">
       <% listItems.forEach(item=> { %>
         <li>
@@ -39,7 +53,6 @@
               
           </div>
           <a class="remark" href="/remark/<%= item.complaint_id %>">Add Remark</a>
-          <a class="delete" href="/api/posts/delete/<%= item.id %>">Delete</a>
         </li>
         <% }); %>
     </ul>
