@@ -128,8 +128,6 @@ app.post("/new", async (req, res) => {
     [title, description, new Date(), currentUserId, category],
   );
 
-  // db.query("INSERT INTO compla")
-
   res.redirect("/complaints");
 });
 
