@@ -21,7 +21,7 @@ app.use(express.static("public"));
 
 app.get("/admin", async (req, res) => {
   const result = await db.query(
-    "SELECT * FROM complaint c JOIN complaint_status cs ON c.status_id = cs.status_id ORDER BY created_at DESC",
+    "SELECT * FROM complaints_status_view ORDER BY created_at DESC",
   );
   console.log(result.rows);
   const status = await db.query("SELECT * FROM complaint_status");
@@ -99,5 +99,5 @@ app.post("/filter", async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`Server running on port http://localhost:${port}/admin`);
 });

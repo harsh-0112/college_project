@@ -126,15 +126,43 @@ INSERT INTO login_history (user_id) VALUES
 -- SAMPLE JOIN QUERY (FOR TESTING)
 -- =========================================
 
+
+SELECT * FROM complaint c 
+JOIN complaint_status cs ON c.status_id = cs.status_id 
+LEFT JOIN admin_remark ar ON c.complaint_id = ar.complaint_id 
+WHERE user_id=$1 
+ORDER BY created_at DESC
+
+
+CREATE VIEW complaints_status_view AS 
 SELECT 
     c.complaint_id,
-    u.name,
     c.title,
+    c.created_at,
+    cs.status_name
+FROM complaint c 
+JOIN complaint_status cs 
+ON c.status_id = cs.status_id;
+
+
+
+CREATE VIEW user_complaints_view AS
+SELECT 
+    c.complaint_id,
+    c.title,
+    c.description,
+    c.created_at,
+    c.user_id,
+
     cs.status_name,
+
     ar.remark_text,
     ar.remark_date
-FROM complaint c
-JOIN users u ON c.user_id = u.user_id
-LEFT JOIN complaint_status cs ON c.status_id = cs.status_id
-LEFT JOIN admin_remark ar ON c.complaint_id = ar.complaint_id
-ORDER BY c.created_at DESC;
+
+FROM complaint c 
+JOIN complaint_status cs 
+ON c.status_id = cs.status_id 
+
+LEFT JOIN admin_remark ar 
+ON c.complaint_id = ar.complaint_id;
+

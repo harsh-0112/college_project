@@ -23,7 +23,7 @@ let currentUserId = 1;
 
 async function getItems() {
   const result = await db.query(
-    "SELECT * FROM complaint c JOIN complaint_status cs ON c.status_id = cs.status_id LEFT JOIN admin_remark ar ON c.complaint_id = ar.complaint_id WHERE user_id=$1 ORDER BY created_at DESC",
+    "SELECT * FROM user_complaints_view WHERE user_id = $1 ORDER BY created_at DESC",
     [currentUserId],
   );
   return result;
@@ -133,5 +133,5 @@ app.post("/new", async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`Server running on port http://localhost:${port}`);
 });
